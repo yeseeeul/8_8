@@ -1,0 +1,331 @@
+
+import streamlit as st
+
+st.set_page_config(
+    page_title="AI 사용 안내 시스템",
+    page_icon="🌷",
+    layout="centered"
+)
+
+# 🌸 귀여운 파스텔 디자인
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(180deg, #fff5fa 0%, #f5f3ff 100%);
+}
+
+.block-container {
+    max-width: 850px;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
+
+html, body, [class*="st-"] {
+    font-size: 19px;
+    color: #51465f;
+}
+
+h1, h2, h3 {
+    color: #a35d91 !important;
+    font-weight: 800 !important;
+}
+
+.stButton button {
+    background-color: #ffffff;
+    color: #a35d91;
+    border: 2px solid #f0c9e2;
+    border-radius: 18px;
+    min-height: 58px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.stButton button:hover {
+    background-color: #ffe6f2;
+    color: #874c80;
+    border-color: #dba8cf;
+}
+
+div[data-testid="stTextInput"] input {
+    border-radius: 14px;
+    min-height: 48px;
+    border: 2px solid #e8cde8;
+    font-size: 18px;
+}
+
+div[data-testid="stAlert"] {
+    border-radius: 16px;
+}
+
+div[data-testid="stExpander"] {
+    background-color: #ffffff;
+    border: 1px solid #ead6f0;
+    border-radius: 15px;
+}
+
+hr {
+    border-color: #ead6f0;
+}
+
+.stSuccess {
+    background-color: #edfff5;
+    border-radius: 15px;
+}
+
+.stInfo {
+    border-radius: 15px;
+}
+
+div[data-testid="stForm"] {
+    background: #ffffff;
+    padding: 20px;
+    border: 2px solid #f3d9ec;
+    border-radius: 20px;
+}
+
+.small-note {
+    color: #8c7794;
+    font-size: 15px;
+    text-align: center;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# 🌷 첫 화면
+st.markdown(
+    "<h1 style='text-align:center;'>🌷 AI 사용 안내 시스템 🌷</h1>",
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    "<p style='text-align:center; color:#987ba3;'>"
+    "💗 어려운 AI 사용법을 쉽고 친절하게 알려드려요 💗"
+    "</p>",
+    unsafe_allow_html=True
+)
+
+st.info("🐰 처음 사용하셔도 괜찮아요! 아래에서 필요한 도움을 골라 보세요.")
+
+# 📚 상황별 안내 자료
+guides = {
+    "💬 AI에게 질문하기": {
+        "keywords": [
+            "질문", "입력", "물어", "글쓰기",
+            "사용법", "시작", "처음", "ai 사용"
+        ],
+        "steps": [
+            "AI 서비스에 접속해요.",
+            "화면 아래쪽의 질문 입력창을 찾아요.",
+            "궁금한 내용을 짧고 구체적으로 입력해요.",
+            "보내기 버튼을 눌러요.",
+            "답변을 읽고 모르는 부분은 다시 질문해요."
+        ],
+        "example": "예시: 스마트폰으로 사진을 보내는 방법을 쉽게 알려 줘."
+    },
+    "🖼️ 사진 및 파일 올리기": {
+        "keywords": [
+            "사진", "이미지", "파일", "첨부", "그림", "사진 올리"
+        ],
+        "steps": [
+            "질문 입력창 근처의 + 또는 첨부 버튼을 찾아요.",
+            "사진이나 파일 선택을 눌러요.",
+            "기기에 저장된 파일을 선택해요.",
+            "사진과 함께 궁금한 내용을 입력해요.",
+            "보내기 버튼을 누르고 답변을 확인해요."
+        ],
+        "example": "예시: 이 사진에 무엇이 있는지 쉽게 설명해 줘."
+    },
+    "🎤 음성으로 질문하기": {
+        "keywords": [
+            "음성", "마이크", "말하기", "말로",
+            "목소리", "말을", "듣기"
+        ],
+        "steps": [
+            "마이크 또는 음성 대화 버튼을 찾아요.",
+            "기기에서 마이크 사용을 허용해요.",
+            "버튼을 누르고 궁금한 내용을 말해요.",
+            "AI의 답변을 듣거나 화면에서 읽어요."
+        ],
+        "example": "예시: 오늘 해야 할 일을 정리하는 방법을 알려 줘."
+    },
+    "📖 답변 쉽게 이해하기": {
+        "keywords": [
+            "이해", "어려워", "무슨 뜻", "모르겠",
+            "쉽게", "설명", "짧게"
+        ],
+        "steps": [
+            "이해하기 어려운 부분을 확인해요.",
+            "AI에게 쉬운 말로 다시 설명해 달라고 요청해요.",
+            "한 번에 한 가지씩 질문해요.",
+            "필요하면 예시를 들어 달라고 요청해요."
+        ],
+        "example": "예시: 어려운 단어를 빼고 쉽게 설명해 줘."
+    },
+    "🛠️ 오류 해결하기": {
+        "keywords": [
+            "오류", "안돼", "안 돼", "멈춤",
+            "고장", "접속", "실행", "작동", "느려"
+        ],
+        "steps": [
+            "인터넷 연결 상태를 확인해요.",
+            "화면을 새로고침해요.",
+            "앱이나 인터넷 브라우저를 다시 실행해요.",
+            "로그인 상태를 확인해요.",
+            "문제가 계속되면 오류 내용을 확인해요."
+        ],
+        "example": "문제가 계속되면 공식 고객센터에 문의해요."
+    },
+    "🔐 개인정보 보호하기": {
+        "keywords": [
+            "개인정보", "비밀번호", "주민등록",
+            "계좌", "보안", "안전", "주소", "사기"
+        ],
+        "steps": [
+            "주민등록번호나 비밀번호를 입력하지 않아요.",
+            "계좌번호와 집 주소도 함부로 공유하지 않아요.",
+            "모르는 사람이 보낸 링크는 조심해요.",
+            "개인정보를 요구하는 화면은 신중하게 확인해요."
+        ],
+        "example": "개인정보를 안전하게 지키는 것이 가장 중요해요!"
+    },
+    "🔎 AI 답변 확인하기": {
+        "keywords": [
+            "틀린", "정확", "사실", "거짓",
+            "출처", "믿어", "확인", "진짜"
+        ],
+        "steps": [
+            "AI가 알려 준 내용에 근거가 있는지 확인해요.",
+            "공공기관이나 공식 홈페이지에서 다시 찾아봐요.",
+            "날짜와 숫자 등 중요한 정보를 비교해요.",
+            "중요한 문제는 전문가에게 문의해요."
+        ],
+        "example": "AI가 알려 주는 정보가 항상 정확한 것은 아니에요."
+    }
+}
+
+# 안내를 화면에 표시하는 함수
+def show_guide(topic):
+    guide = guides.get(topic)
+
+    if guide is None:
+        st.error("안내 자료를 찾을 수 없어요.")
+        return
+
+    st.markdown(f"### 🌼 {topic}")
+    st.write("아래 순서대로 천천히 따라 해 보세요!")
+
+    for i, step in enumerate(guide["steps"], start=1):
+        st.markdown(f"**💗 {i}단계.** {step}")
+
+    st.success("🌸 " + guide["example"])
+
+
+# 🌈 상황별 버튼
+st.divider()
+st.header("🌼 1. 필요한 도움 선택하기")
+st.write("원하는 항목을 눌러 보세요!")
+
+topics = list(guides.keys())
+
+for start in range(0, len(topics), 2):
+    columns = st.columns(2)
+
+    for offset, column in enumerate(columns):
+        index = start + offset
+
+        if index < len(topics):
+            topic = topics[index]
+
+            with column:
+                if st.button(
+                    topic,
+                    key=f"button_{index}",
+                    use_container_width=True
+                ):
+                    st.session_state["selected_topic"] = topic
+
+if "selected_topic" in st.session_state:
+    show_guide(st.session_state["selected_topic"])
+
+# 💬 직접 질문하기
+st.divider()
+st.header("💌 2. 직접 질문하기")
+st.write("어떤 점이 어려운지 적어 주세요. 관련된 안내를 찾아 드릴게요!")
+
+with st.form("question_form"):
+    question = st.text_input(
+        "🌷 궁금한 내용",
+        placeholder="예: 사진을 어떻게 올리는지 모르겠어요."
+    )
+
+    submitted = st.form_submit_button(
+        "💗 안내 찾아보기",
+        use_container_width=True
+    )
+
+if submitted:
+    q = question.strip().lower()
+
+    if not q:
+        st.warning("질문을 먼저 입력해 주세요. 🐣")
+    else:
+        scores = {}
+
+        for topic, guide in guides.items():
+            scores[topic] = sum(
+                1 for keyword in guide["keywords"]
+                if keyword in q
+            )
+
+        best_topic = max(scores, key=scores.get)
+
+        if scores[best_topic] > 0:
+            st.session_state["answer_topic"] = best_topic
+            st.session_state["answer_question"] = question.strip()
+        else:
+            st.session_state["answer_topic"] = None
+            st.session_state["answer_question"] = question.strip()
+
+if "answer_question" in st.session_state:
+    st.markdown("### 🐰 질문 결과")
+    st.write("💌 입력한 질문: " + st.session_state["answer_question"])
+
+    answer_topic = st.session_state["answer_topic"]
+
+    if answer_topic:
+        show_guide(answer_topic)
+    else:
+        st.warning(
+            "질문과 정확히 맞는 안내를 찾지 못했어요. "
+            "아래의 상황별 버튼에서 비슷한 항목을 선택하거나 "
+            "다른 표현으로 질문해 주세요. 🌷"
+        )
+
+# 🔒 안전 안내
+st.divider()
+st.header("🎀 3. 안전하게 AI 사용하기")
+
+with st.expander("🔐 개인정보를 지켜요"):
+    st.write(
+        "주민등록번호, 비밀번호, 계좌번호, 집 주소 등 "
+        "중요한 개인정보는 AI에 입력하지 마세요."
+    )
+
+with st.expander("🌟 AI 답변을 확인해요"):
+    st.write(
+        "AI는 잘못된 정보를 알려 줄 수 있어요. "
+        "중요한 정보는 공공기관이나 공식 홈페이지에서 확인해요."
+    )
+
+with st.expander("🧸 문제가 생겼을 때"):
+    st.write(
+        "인터넷 연결을 확인하고 앱을 다시 실행해 보세요. "
+        "문제가 계속되면 공식 고객센터에 문의해요."
+    )
+
+st.markdown(
+    "<p class='small-note'>🌷 AI 사용 안내 시스템 🌷<br>"
+    "누구나 쉽고 편리하게 배우는 AI 사용법 💗</p>",
+    unsafe_allow_html=True
+)
