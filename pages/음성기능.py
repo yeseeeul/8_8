@@ -2,11 +2,10 @@ import streamlit as st
 import google.generativeai as genai
 from gtts import gTTS
 import io
-import os
 
-# --- 페이지 기본 설정 ---
+# --- 페이지 기본 설정 (page_title 오타 수정 완료) ---
 st.set_page_config(
-    page_page_title="어르신 AI 쉬운 배움터",
+    page_title="어르신 AI 쉬운 배움터",
     page_icon="👵",
     layout="centered"
 )
@@ -54,7 +53,7 @@ api_key = st.secrets.get("GEMINI_API_KEY")
 if api_key:
     try:
         genai.configure(api_key=api_key)
-        # 요구사항에 명시된 gemini-2.5-flash-lite 사용
+        # gemini-2.5-flash-lite 모델 지정
         model = genai.GenerativeModel("gemini-2.5-flash-lite")
     except Exception as e:
         st.error(f"AI 모델 설정 중 오류가 발생했습니다: {e}")
