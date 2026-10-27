@@ -7,7 +7,7 @@ st.set_page_config(
 )
 
 st.markdown("""
-<style>
+<style> 
 html, body, [class*="css"] {
     font-size: 20px;
 }
